@@ -1,0 +1,26 @@
+C51 USB Library 
+
+#C  Copyright (c) 2002 Atmel Nantes
+
+# $Id: usb.txt,v 1.3 2005/03/10 08:26:55 lguilhau Exp $
+
+DESCRIPTION
+-----------
+The C51 USB library contains all C functions to start an USB transmission/reception.
+This library is compliant with all devices of C51 USB family.
+
+Functions are in the usb_drv.c file. The usb_drv.h file gives functions which access directly to SFRs.
+
+An include file is necessary with the SFR description.
+This file depends of the selected device. A config.h file calls in the library contains the link with this file.
+
+CONFIGURATION
+-------------
+<PRE>
+In config.h:
+
+1/ USB_FORCE_DETACH (optional)
+To be  sure to have a correct USB enumeration.
+
+</PRE>
+
