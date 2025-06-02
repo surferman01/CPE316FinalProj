@@ -85,7 +85,7 @@ void ShiftReg_shift_in_data(uint8_t *data, int shiftreg_count) {
 
 			set_SRCK(HIGH);
 
-			delay_ns(MIN_SIN_HOLD_TIME);
+			delay_ns(MIN_SIN_PULSE_DURATION);
 			set_SRCK(LOW);
 		}
 	}

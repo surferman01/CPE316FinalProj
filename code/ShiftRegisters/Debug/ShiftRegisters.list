@@ -707,8 +707,8 @@ void ShiftReg_shift_in_data(uint8_t *data, int shiftreg_count) {
  800051c:	2001      	movs	r0, #1
  800051e:	f000 f82f 	bl	8000580 <set_SRCK>
 
-			delay_ns(MIN_SIN_HOLD_TIME);
- 8000522:	200a      	movs	r0, #10
+			delay_ns(MIN_SIN_PULSE_DURATION);
+ 8000522:	2014      	movs	r0, #20
  8000524:	f000 f930 	bl	8000788 <delay_ns>
 			set_SRCK(LOW);
  8000528:	2000      	movs	r0, #0
