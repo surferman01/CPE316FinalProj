@@ -2,7 +2,11 @@
 #define _SHIFTREG_C
 
 #include "shiftreg.h"
+#include "shiftreg_conf.h"
+
 #include "timer.h"
+
+#include <stdint.h>
 
 /* constants */
 
@@ -20,6 +24,7 @@
 
 // from stm32l476rg reference manual table 72 (I/O AC characteristics)
 // took 3.3V and highest capacitance conditions
+// 30pF for very high and 50pF for high, medium, and low
 #define GPIO_RISE_FALL_TIME(gpio_speed)                      		\
     ( (gpio_speed) == GPIO_SPEED_FREQ_VERY_HIGH ?  4 : /* 3.3 ns */ \
       (gpio_speed) == GPIO_SPEED_FREQ_HIGH      ?  6 : /* 5.8 ns */ \
@@ -27,20 +32,43 @@
       (gpio_speed) == GPIO_SPEED_FREQ_LOW       ? 25 : /* 25 ns */ 	\
 	  	  	  	  	  	  	  	  	  	  	  	  25 ) /* default */
 
+#define GPIO_SPEC_CAPACITANCE_CONDITIONS(gpio_speed) \
+	( (gpio_speed) == GPIO_SPEED_FREQ_VERY_HIGH ? 30 : 50) // pF
 
+// scale safety factor based on capacitance ((capacitance + speced capacitance - 1) / (speced capacitance)
+#define CAPACITANCE_SAFETY_FACTOR(gpio_capacitance, gpio_speed) \
+		(((gpio_capacitance) + GPIO_SPEC_CAPACITANCE_CONDITIONS(gpio_speed) - 1) / GPIO_SPEC_CAPACITANCE_CONDITIONS(gpio_speed))
 
-#define GPIO_RISE_FALL_SAFETY_MARGIN 0 // 0 ns
-// to be really safe, incase we have a ton of extra capacitance, we are using large safety factor
-#define GPIO_RISE_FALL_SAFETY_FACTOR 3 // 3x
+// get GPIO safe driven rise and fall time
+#define GPIO_SAFE_RISE_FALL_TIME(gpio_speed, gpio_capacitance) \
+					(GPIO_RISE_FALL_TIME(gpio_speed) * CAPACITANCE_SAFETY_FACTOR(gpio_capacitance, gpio_speed))
 
-#define GPIO_SAFE_RISE_FALL_TIME(gpio_speed) (GPIO_RISE_FALL_TIME(gpio_speed) * GPIO_RISE_FALL_SAFETY_FACTOR + GPIO_RISE_FALL_SAFETY_MARGIN)
+// RC Circuit (how long from 0 to 90%)
+//
+// V(t) = VDD * (1 – e^(–t/RC))
+// -> 0.9 = 1 – e^(–t90/RC)
+// -> e^(–t90/RC) = 0.1
+// -> t90 = –RC * ln(0.1)
+// -> t = RC * ln(10)
+// -> t = ~2.302 * RC
+// R in ohms, C in pF, t in ns
+// -> t * 10^-9 = ~2.302 * R * C * 10^12
+// -> t = (~2.302 * R * C) / 1000
+// -> t = (~23.02 * R * C) / 10000
+//
+#define RC_RISE_TIME_90(R, C) ((23 * (R) * (C)) / 10000)
 
-// select from speed settings
-#define RCK_RISE_FALL_TIME   	GPIO_SAFE_RISE_FALL_TIME(SHIFTREG_RCK_SPEED_SETTING)
-#define SRCK_RISE_FALL_TIME   	GPIO_SAFE_RISE_FALL_TIME(SHIFTREG_SRCK_SPEED_SETTING)
-#define SIN_RISE_FALL_TIME   	GPIO_SAFE_RISE_FALL_TIME(SHIFTREG_SIN_SPEED_SETTING)
-#define NG_RISE_FALL_TIME   	GPIO_SAFE_RISE_FALL_TIME(SHIFTREG_NG_SPEED_SETTING)
+// get driving speed from speed settings
+#define RCK_FALL_TIME   GPIO_SAFE_RISE_FALL_TIME(SHIFTREG_RCK_SPEED_SETTING, SHIFTREG_RCK_CAPACITANCE_PICOFARADS)
+#define SRCK_FALL_TIME	GPIO_SAFE_RISE_FALL_TIME(SHIFTREG_SRCK_SPEED_SETTING, SHIFTREG_SRCK_CAPACITANCE_PICOFARADS)
+#define SIN_FALL_TIME   GPIO_SAFE_RISE_FALL_TIME(SHIFTREG_SIN_SPEED_SETTING, SHIFTREG_SIN_CAPACITANCE_PICOFARADS)
+#define NG_FALL_TIME   	GPIO_SAFE_RISE_FALL_TIME(SHIFTREG_NG_SPEED_SETTING, SHIFTREG_NG_CAPACITANCE_PICOFARADS)
 
+// goes open drain and becomes an RC circuit after stopping driving
+#define RCK_RISE_TIME   (RCK_FALL_TIME + RC_RISE_TIME_90(SHIFTREG_RCK_EXTERNAL_PULLUP_OHMS, SHIFTREG_RCK_CAPACITANCE_PICOFARADS))
+#define SRCK_RISE_TIME	(SRCK_FALL_TIME + RC_RISE_TIME_90(SHIFTREG_SRCK_EXTERNAL_PULLUP_OHMS, SHIFTREG_SRCK_CAPACITANCE_PICOFARADS))
+#define SIN_RISE_TIME   (SIN_FALL_TIME + RC_RISE_TIME_90(SHIFTREG_SIN_EXTERNAL_PULLUP_OHMS, SHIFTREG_SIN_CAPACITANCE_PICOFARADS))
+#define NG_RISE_TIME   	(NG_FALL_TIME + RC_RISE_TIME_90(SHIFTREG_NG_EXTERNAL_PULLUP_OHMS, SHIFTREG_NG_CAPACITANCE_PICOFARADS))
 
 /* static function definitions */
 
@@ -99,22 +127,38 @@ void ShiftReg_shift_in_data(uint8_t *data, int shiftreg_count) {
 
 static void set_RCK(GPIO_PinState val) {
 	HAL_GPIO_WritePin(SHIFTREG_RCK_GPIO_EXPANDER, SHIFTREG_RCK_GPIO_PIN, val);
-	delay_ns(RCK_RISE_FALL_TIME);
+	if (val == GPIO_PIN_SET) {
+		delay_ns(RCK_RISE_TIME);
+	} else {
+		delay_ns(RCK_FALL_TIME);
+	}
 }
 
 static void set_SRCK(GPIO_PinState val) {
 	HAL_GPIO_WritePin(SHIFTREG_SRCK_GPIO_EXPANDER, SHIFTREG_SRCK_GPIO_PIN, val);
-	delay_ns(SRCK_RISE_FALL_TIME);
+	if (val == GPIO_PIN_SET) {
+		delay_ns(SRCK_RISE_TIME);
+	} else {
+		delay_ns(SRCK_FALL_TIME);
+	}
 }
 
 static void set_SIN(GPIO_PinState val) {
 	HAL_GPIO_WritePin(SHIFTREG_SIN_GPIO_EXPANDER, SHIFTREG_SIN_GPIO_PIN, val);
-	delay_ns(SIN_RISE_FALL_TIME);
+	if (val == GPIO_PIN_SET) {
+		delay_ns(SIN_RISE_TIME);
+	} else {
+		delay_ns(SIN_FALL_TIME);
+	}
 }
 
 static void set_nG(GPIO_PinState val) {
 	HAL_GPIO_WritePin(SHIFTREG_NG_GPIO_EXPANDER, SHIFTREG_NG_GPIO_PIN, val);
-	delay_ns(NG_RISE_FALL_TIME);
+	if (val == GPIO_PIN_SET) {
+		delay_ns(NG_RISE_TIME);
+	} else {
+		delay_ns(NG_FALL_TIME);
+	}
 }
 
 

@@ -25,7 +25,7 @@ Core/Src/shiftreg.o: ../Core/Src/shiftreg.c ../Core/Inc/shiftreg.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_pwr_ex.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_tim.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_tim_ex.h \
- ../Core/Inc/timer.h
+ ../Core/Inc/shiftreg_conf.h ../Core/Inc/timer.h
 ../Core/Inc/shiftreg.h:
 ../Core/Inc/main.h:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h:
@@ -54,4 +54,5 @@ Core/Src/shiftreg.o: ../Core/Src/shiftreg.c ../Core/Inc/shiftreg.h \
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_pwr_ex.h:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_tim.h:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_tim_ex.h:
+../Core/Inc/shiftreg_conf.h:
 ../Core/Inc/timer.h:
