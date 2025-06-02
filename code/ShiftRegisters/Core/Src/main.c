@@ -66,14 +66,12 @@ int main(void)
 
 	Timer_set_ns_upcounter(&htim5);
 
-	ShiftReg_test();
-
-	//ShiftReg_output_enable();
-	//ShiftReg_shift_in_data(test_data, SHIFT_REG_COUNT);
+	ShiftReg_output_enable();
 
 	while (1)
 	{
-
+		ShiftReg_shift_in_data(test_data, SHIFT_REG_COUNT);
+		HAL_Delay(1000);
 	}
 
 }
@@ -233,7 +231,7 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, RCK_Pin|nG_Pin|SRCK_Pin|SIN_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOB, RCK_Pin|nG_Pin|SRCK_Pin|SIN_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pins : RCK_Pin nG_Pin SRCK_Pin SIN_Pin */
   GPIO_InitStruct.Pin = RCK_Pin|nG_Pin|SRCK_Pin|SIN_Pin;
