@@ -3,7 +3,7 @@ SymbolType BLOCK
 RECTANGLE Normal -96 336 128 -336
 WINDOW 3 4 -324 Top 1
 SYMATTR Value LED_Driver
-SYMATTR Prefix X
+SYMATTR Prefix XU
 SYMATTR SpiceModel MY_IC_40PIN
 SYMATTR Description Placeholder 40-pin IC
 SYMATTR ModelFile MY_IC_40PIN.sub

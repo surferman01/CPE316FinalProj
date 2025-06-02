@@ -4,7 +4,7 @@ RECTANGLE Normal -96 192 96 -160
 TEXT -4 180 Center 2 74HC245
 WINDOW 0 -8 -92 Bottom 2
 WINDOW 3 0 -156 Top 2
-SYMATTR Prefix U
+SYMATTR Prefix XU
 SYMATTR SpiceModel 74HC245
 SYMATTR Description 74HC245 Octal Bus Transceiver; 3-state
 SYMATTR ModelFile 74HC245.sub
