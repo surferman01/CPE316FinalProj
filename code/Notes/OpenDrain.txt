@@ -1,0 +1,10 @@
+In the GPIO configuration set GPIO mode to Output Open Drain. Set Maximum Output Speed is set as Very High.
+
+An external 5V pull-up is required.
+
+Any GPIOs could be used, but for this configuration these are used:
+PA2 RCLK
+PA3 SRCLK 
+PB8 SIN
+PB9 nG
+
