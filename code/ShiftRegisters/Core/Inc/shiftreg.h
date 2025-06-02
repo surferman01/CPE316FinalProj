@@ -16,6 +16,8 @@
 
 #include "main.h"
 
+SCOPE void ShiftReg_test();
+
 SCOPE void ShiftReg_output_enable();
 SCOPE void ShiftReg_output_disable();
 

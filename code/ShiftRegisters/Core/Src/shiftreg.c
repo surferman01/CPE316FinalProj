@@ -84,6 +84,21 @@ static void set_nG(GPIO_PinState val);
 
 /* exposed functions */
 
+void ShiftReg_test() {
+	while (1) {
+		set_SIN(LOW);
+		set_RCK(LOW);
+		set_SRCK(LOW);
+		set_nG(LOW);
+		HAL_Delay(1000);
+		set_SIN(HIGH);
+		set_RCK(HIGH);
+		set_SRCK(HIGH);
+		set_nG(HIGH);
+		HAL_Delay(1000);
+	}
+}
+
 void ShiftReg_output_enable() {
 	set_nG(LOW);
 	delay_ns(TYP_NG_HIGH_TO_LOW_PROPAGATION_DELAY);

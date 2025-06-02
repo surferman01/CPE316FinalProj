@@ -27,11 +27,21 @@
 
 /* ****** CAUTION ******
  *
- * DO NOT USE a 150 ohm pullup, 33 mA is too much for the GPIO drivers
- * The pins used MUST BE 5V TOLERANT (FT)
- *  in the stm32l476rg reference manual, Table 16 (STM32L476xx pin definitions):
- * 	NOT 5V TOLERANCE: PA3, PA4, PA5, PB0
- * 	All other GPIOs on the LQFP64 package are FT
+ * DO NOT USE: less than 625ohm pullup, max 8mA for 5V the GPIO drivers
+ *  see stm32l476xx reference manual, figure 30 (I/O input characteristics)
+ *  "The GPIOs (general purpose input/outputs) can sink or source up to ±8 mA,
+ *   and sink or source up to ± 20 mA **(with a relaxed VOL/VOH)**"
+ *
+ *
+ * DO NOT USE: PA2, PA3, PA4, PA5, PA13, PA14, PB0, PB3
+ * 	The pins used MUST BE 5V TOLERANT (FT)
+ *   see stm32l476xx reference manual, table 16 (STM32L476xx pin definitions):
+ * 	 NOT 5V TOLERANCE: PA3, PA4, PA5, PB0
+ * 	 All other GPIOs on the LQFP64 package are FT
+ *  The pins used MUST NOT be already used by ST-LINK at 3.3V
+ * 	 see mb1136 user manual, bolded entries in table 10 (solder bridges):
+ * 	 USED: PA13, PA14, PB3, PA2, PA3
+ *
  *
  */
 
@@ -39,15 +49,15 @@
 #define INC_SHIFTREG_CONF_H_
 
 // PA2 -> RCLK
-#define SHIFTREG_RCK_GPIO_EXPANDER 				GPIOA
-#define SHIFTREG_RCK_GPIO_PIN 					GPIO_PIN_2
+#define SHIFTREG_RCK_GPIO_EXPANDER 				GPIOB
+#define SHIFTREG_RCK_GPIO_PIN 					GPIO_PIN_4
 #define SHIFTREG_RCK_SPEED_SETTING 				GPIO_SPEED_FREQ_VERY_HIGH
 #define SHIFTREG_RCK_EXTERNAL_PULLUP_OHMS 		1000	// ohms
 #define SHIFTREG_RCK_CAPACITANCE_PICOFARADS 	50		// pF
 
 // PA3 -> SRCK
-#define SHIFTREG_SRCK_GPIO_EXPANDER 			GPIOA
-#define SHIFTREG_SRCK_GPIO_PIN 					GPIO_PIN_3
+#define SHIFTREG_SRCK_GPIO_EXPANDER 			GPIOB
+#define SHIFTREG_SRCK_GPIO_PIN 					GPIO_PIN_8
 #define SHIFTREG_SRCK_SPEED_SETTING 			GPIO_SPEED_FREQ_VERY_HIGH
 #define SHIFTREG_SRCK_EXTERNAL_PULLUP_OHMS 		1000	// ohms
 #define SHIFTREG_SRCK_CAPACITANCE_PICOFARADS 	50		// pF
@@ -61,7 +71,7 @@
 
 // PB8 -> nG
 #define SHIFTREG_NG_GPIO_EXPANDER 				GPIOB
-#define SHIFTREG_NG_GPIO_PIN 					GPIO_PIN_8
+#define SHIFTREG_NG_GPIO_PIN 					GPIO_PIN_5
 #define SHIFTREG_NG_SPEED_SETTING 				GPIO_SPEED_FREQ_VERY_HIGH
 #define SHIFTREG_NG_EXTERNAL_PULLUP_OHMS 		1000	// ohms
 #define SHIFTREG_NG_CAPACITANCE_PICOFARADS 		50 		// pF
