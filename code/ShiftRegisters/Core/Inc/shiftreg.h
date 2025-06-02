@@ -14,6 +14,8 @@
  *
  * Ensure SHIFTREG_*_SPEED_SETTING matches Maximum Output Speed
  *
+ * This assumes that the TPIC6595s are daisy chained and properly connected
+ *
  */
 
 #ifndef INC_SHIFTREG_H_

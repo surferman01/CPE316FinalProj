@@ -72,7 +72,7 @@ void ShiftReg_shift_in_data(uint8_t *data, int shiftreg_count) {
 	// reset SRCLK to low
 	set_SRCK(LOW);
 
-	for (regnum = shiftreg_count; regnum >= 0; regnum--) {
+	for (regnum = shiftreg_count - 1; regnum >= 0; regnum--) {
 		for (bitnum = 7; bitnum >= 0; bitnum--) {
 			// get bitnum of regnum's data
 			bit = (data[regnum] >> bitnum) & 0x01;
