@@ -1,7 +1,7 @@
-../Core/Src/shiftreg.c:82:6:ShiftReg_output_enable	8	static
-../Core/Src/shiftreg.c:87:6:ShiftReg_output_disable	8	static
-../Core/Src/shiftreg.c:92:6:ShiftReg_shift_in_data	32	static
-../Core/Src/shiftreg.c:128:13:set_RCK	16	static
-../Core/Src/shiftreg.c:137:13:set_SRCK	16	static
-../Core/Src/shiftreg.c:146:13:set_SIN	16	static
-../Core/Src/shiftreg.c:155:13:set_nG	16	static
+../Core/Src/shiftreg.c:87:6:ShiftReg_output_enable	8	static
+../Core/Src/shiftreg.c:92:6:ShiftReg_output_disable	8	static
+../Core/Src/shiftreg.c:97:6:ShiftReg_shift_in_data	32	static
+../Core/Src/shiftreg.c:133:13:set_RCK	16	static
+../Core/Src/shiftreg.c:142:13:set_SRCK	16	static
+../Core/Src/shiftreg.c:151:13:set_SIN	16	static
+../Core/Src/shiftreg.c:160:13:set_nG	16	static

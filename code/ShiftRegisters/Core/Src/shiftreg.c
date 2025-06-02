@@ -1,3 +1,8 @@
+/** shiftreg.c
+ * Implements a driver for the TPIC6595 shift register using Open Drain GPIOs
+ *
+ * Author: Alex Castellar
+*/
 
 #define _SHIFTREG_C
 
