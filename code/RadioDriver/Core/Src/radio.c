@@ -6,7 +6,7 @@
 
 #define _SHIFTREG_C
 
-#include <radio.h>
+#include "radio.h"
 #include "radio_conf.h"
 
 #include "timer.h"
@@ -201,7 +201,7 @@ void nrf24l01p_tx_irq()
     else
     {
         // MAX_RT
-        HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, SET);
+       //HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, SET);
         nrf24l01p_clear_max_rt();
     }
 }
