@@ -388,6 +388,7 @@ void nrf24l01p_set_address_widths(widths bytes)
     write_register(NRF24L01P_REG_SETUP_AW, bytes - 2);
 }
 
+/*
 void nrf24l01p_auto_retransmit_count(count cnt)
 {
     uint8_t new_setup_retr = read_register(NRF24L01P_REG_SETUP_RETR);
@@ -406,6 +407,23 @@ void nrf24l01p_auto_retransmit_delay(delay us)
     new_setup_retr |= 0x0F;
     new_setup_retr |= ((us / 250) - 1) << 4;
     write_register(NRF24L01P_REG_SETUP_RETR, new_setup_retr);
+}
+*/
+
+void nrf24l01p_auto_retransmit_count(count cnt)
+{
+    uint8_t v = read_register(NRF24L01P_REG_SETUP_RETR);
+    v &= 0xF0;                 // keep ARD, clear ARC
+    v |= (cnt & 0x0F);
+    write_register(NRF24L01P_REG_SETUP_RETR, v);
+}
+
+void nrf24l01p_auto_retransmit_delay(delay us)
+{
+    uint8_t v = read_register(NRF24L01P_REG_SETUP_RETR);
+    v &= 0x0F;                 // keep ARC, clear ARD
+    v |= (((us/250) - 1) & 0x0F) << 4;
+    write_register(NRF24L01P_REG_SETUP_RETR, v);
 }
 
 void nrf24l01p_set_rf_channel(channel MHz)

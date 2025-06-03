@@ -5,4 +5,4 @@
 ../Core/Src/main.c:189:13:MX_TIM2_Init	4
 ../Core/Src/main.c:234:13:MX_TIM5_Init	4
 ../Core/Src/main.c:279:13:MX_GPIO_Init	1
-../Core/Src/main.c:330:6:Error_Handler	1
+../Core/Src/main.c:334:6:Error_Handler	1
