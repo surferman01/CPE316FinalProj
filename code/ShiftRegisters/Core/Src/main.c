@@ -35,7 +35,7 @@ static uint8_t test_data[SHIFT_REG_COUNT] = {
 		0xAA, // 2
 		0xCC, // 3
 		0x33, // 4
-		0xEE, // 5
+		0xFF, // 5
 		0x00, // 6
 		0x00, // 7
 };
@@ -66,14 +66,13 @@ int main(void)
 
 	Timer_set_ns_upcounter(&htim5);
 
-	HAL_Delay(5000);
+	HAL_Delay(3000);
 
 	ShiftReg_shift_in_data(test_data, SHIFT_REG_COUNT);
 	ShiftReg_output_enable();
 
 	while (1)
 	{
-
 		HAL_Delay(1000);
 		ShiftReg_shift_in_data(test_data, SHIFT_REG_COUNT);
 	}

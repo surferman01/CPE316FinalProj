@@ -130,14 +130,83 @@ Discarded input sections
  .group         0x00000000        0xc ./Core/Src/radio.o
  .group         0x00000000        0xc ./Core/Src/radio.o
  .group         0x00000000        0xc ./Core/Src/radio.o
+ .group         0x00000000        0xc ./Core/Src/radio.o
+ .group         0x00000000        0xc ./Core/Src/radio.o
+ .group         0x00000000        0xc ./Core/Src/radio.o
  .text          0x00000000        0x0 ./Core/Src/radio.o
  .data          0x00000000        0x0 ./Core/Src/radio.o
  .bss           0x00000000        0x0 ./Core/Src/radio.o
- .debug_info    0x00000000       0x70 ./Core/Src/radio.o
- .debug_abbrev  0x00000000       0x28 ./Core/Src/radio.o
+ .bss.spi_handle
+                0x00000000        0x4 ./Core/Src/radio.o
+ .text.cs_high  0x00000000       0x16 ./Core/Src/radio.o
+ .text.cs_low   0x00000000       0x16 ./Core/Src/radio.o
+ .text.ce_high  0x00000000       0x18 ./Core/Src/radio.o
+ .text.ce_low   0x00000000       0x18 ./Core/Src/radio.o
+ .text.read_register
+                0x00000000       0x50 ./Core/Src/radio.o
+ .text.write_register
+                0x00000000       0x60 ./Core/Src/radio.o
+ .text.nrf24l01p_rx_init
+                0x00000000       0x68 ./Core/Src/radio.o
+ .text.nrf24l01p_tx_init
+                0x00000000       0x60 ./Core/Src/radio.o
+ .text.nrf24l01p_rx_receive
+                0x00000000       0x28 ./Core/Src/radio.o
+ .text.nrf24l01p_tx_transmit
+                0x00000000       0x16 ./Core/Src/radio.o
+ .text.nrf24l01p_tx_irq
+                0x00000000       0x48 ./Core/Src/radio.o
+ .text.nrf24l01p_reset
+                0x00000000       0xa8 ./Core/Src/radio.o
+ .text.nrf24l01p_prx_mode
+                0x00000000       0x2a ./Core/Src/radio.o
+ .text.nrf24l01p_ptx_mode
+                0x00000000       0x2a ./Core/Src/radio.o
+ .text.nrf24l01p_read_rx_fifo
+                0x00000000       0x4c ./Core/Src/radio.o
+ .text.nrf24l01p_write_tx_fifo
+                0x00000000       0x4c ./Core/Src/radio.o
+ .text.nrf24l01p_flush_rx_fifo
+                0x00000000       0x34 ./Core/Src/radio.o
+ .text.nrf24l01p_flush_tx_fifo
+                0x00000000       0x34 ./Core/Src/radio.o
+ .text.nrf24l01p_get_status
+                0x00000000       0x34 ./Core/Src/radio.o
+ .text.nrf24l01p_get_fifo_status
+                0x00000000       0x10 ./Core/Src/radio.o
+ .text.nrf24l01p_rx_set_payload_widths
+                0x00000000       0x1c ./Core/Src/radio.o
+ .text.nrf24l01p_clear_rx_dr
+                0x00000000       0x28 ./Core/Src/radio.o
+ .text.nrf24l01p_clear_tx_ds
+                0x00000000       0x28 ./Core/Src/radio.o
+ .text.nrf24l01p_clear_max_rt
+                0x00000000       0x28 ./Core/Src/radio.o
+ .text.nrf24l01p_power_up
+                0x00000000       0x2a ./Core/Src/radio.o
+ .text.nrf24l01p_power_down
+                0x00000000       0x2a ./Core/Src/radio.o
+ .text.nrf24l01p_set_crc_length
+                0x00000000       0x46 ./Core/Src/radio.o
+ .text.nrf24l01p_set_address_widths
+                0x00000000       0x20 ./Core/Src/radio.o
+ .text.nrf24l01p_auto_retransmit_count
+                0x00000000       0x36 ./Core/Src/radio.o
+ .text.nrf24l01p_auto_retransmit_delay
+                0x00000000       0x50 ./Core/Src/radio.o
+ .text.nrf24l01p_set_rf_channel
+                0x00000000       0x26 ./Core/Src/radio.o
+ .text.nrf24l01p_set_rf_tx_output_power
+                0x00000000       0x3c ./Core/Src/radio.o
+ .text.nrf24l01p_set_rf_air_data_rate
+                0x00000000       0x52 ./Core/Src/radio.o
+ .debug_info    0x00000000      0xd88 ./Core/Src/radio.o
+ .debug_abbrev  0x00000000      0x2db ./Core/Src/radio.o
  .debug_aranges
-                0x00000000       0x18 ./Core/Src/radio.o
- .debug_macro   0x00000000      0x1f8 ./Core/Src/radio.o
+                0x00000000      0x120 ./Core/Src/radio.o
+ .debug_rnglists
+                0x00000000       0xd4 ./Core/Src/radio.o
+ .debug_macro   0x00000000      0x209 ./Core/Src/radio.o
  .debug_macro   0x00000000      0xad8 ./Core/Src/radio.o
  .debug_macro   0x00000000       0x10 ./Core/Src/radio.o
  .debug_macro   0x00000000      0x1a7 ./Core/Src/radio.o
@@ -175,10 +244,14 @@ Discarded input sections
  .debug_macro   0x00000000      0x1e6 ./Core/Src/radio.o
  .debug_macro   0x00000000      0x330 ./Core/Src/radio.o
  .debug_macro   0x00000000       0x46 ./Core/Src/radio.o
+ .debug_macro   0x00000000       0x10 ./Core/Src/radio.o
+ .debug_macro   0x00000000       0x22 ./Core/Src/radio.o
+ .debug_macro   0x00000000      0x131 ./Core/Src/radio.o
  .debug_macro   0x00000000       0x1c ./Core/Src/radio.o
- .debug_line    0x00000000      0x6dc ./Core/Src/radio.o
- .debug_str     0x00000000    0xe77c8 ./Core/Src/radio.o
+ .debug_line    0x00000000      0xafb ./Core/Src/radio.o
+ .debug_str     0x00000000    0xe8628 ./Core/Src/radio.o
  .comment       0x00000000       0x44 ./Core/Src/radio.o
+ .debug_frame   0x00000000      0x484 ./Core/Src/radio.o
  .ARM.attributes
                 0x00000000       0x34 ./Core/Src/radio.o
  .group         0x00000000        0xc ./Core/Src/stm32l4xx_hal_msp.o
