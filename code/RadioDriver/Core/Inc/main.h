@@ -63,11 +63,12 @@ void Error_Handler(void);
 #define MISO_GPIO_Port GPIOA
 #define MOSI_Pin GPIO_PIN_7
 #define MOSI_GPIO_Port GPIOA
-#define IRQ_Pin GPIO_PIN_7
-#define IRQ_GPIO_Port GPIOC
-#define IRQ_EXTI_IRQn EXTI9_5_IRQn
-#define CS_Pin GPIO_PIN_6
+#define CS_Pin GPIO_PIN_10
 #define CS_GPIO_Port GPIOB
+#define CE_Pin GPIO_PIN_7
+#define CE_GPIO_Port GPIOC
+#define IRQ_Pin GPIO_PIN_6
+#define IRQ_GPIO_Port GPIOB
 
 /* USER CODE BEGIN Private defines */
 

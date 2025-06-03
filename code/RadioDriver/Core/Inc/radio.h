@@ -47,7 +47,7 @@ SCOPE void ShiftReg_shift_in_data(uint8_t *data, int shiftreg_count);
 /* User Configurations */
 
 // PB10
-#define NRF24L01P_SPI_CS_PIN_PORT         GPIOA
+#define NRF24L01P_SPI_CS_PIN_PORT         GPIOB
 #define NRF24L01P_SPI_CS_PIN_NUMBER       GPIO_PIN_10
 
 // PC7
