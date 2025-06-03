@@ -66,12 +66,16 @@ int main(void)
 
 	Timer_set_ns_upcounter(&htim5);
 
+	HAL_Delay(5000);
+
+	ShiftReg_shift_in_data(test_data, SHIFT_REG_COUNT);
 	ShiftReg_output_enable();
 
 	while (1)
 	{
-		ShiftReg_shift_in_data(test_data, SHIFT_REG_COUNT);
+
 		HAL_Delay(1000);
+		ShiftReg_output_enable();
 	}
 
 }
