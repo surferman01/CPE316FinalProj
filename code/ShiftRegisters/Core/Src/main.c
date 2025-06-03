@@ -75,7 +75,7 @@ int main(void)
 	{
 
 		HAL_Delay(1000);
-		ShiftReg_output_enable();
+		ShiftReg_shift_in_data(test_data, SHIFT_REG_COUNT);
 	}
 
 }
