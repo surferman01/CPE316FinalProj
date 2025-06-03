@@ -1,65 +1,22 @@
 /** radio.h
  * Implements a driver for the nRF24L01 transceiver
  *
- * Created by Alex Castellar
+ * Modified by Alex Castellar
+ * Original Code from mokhwasomssi
 */
 
 
 #ifndef INC_RADIO_H_
 #define INC_RADIO_H_
 
-#ifdef _SHIFTREG_C
+#ifdef _RADIO_C
    #define SCOPE
 #else
    #define SCOPE extern
 #endif
 
 #include "main.h"
-
-SCOPE void ShiftReg_output_enable();
-SCOPE void ShiftReg_output_disable();
-
-SCOPE void ShiftReg_shift_in_data(uint8_t *data, int shiftreg_count);
-
-#undef SCOPE
-#endif /* INC_RADIO_H_ */
-
-/***********************************************************************************************************
- * TEMP CODE
- ***********************************************************************************************************/
-
-/*
- *  nrf24l01_plus.h
- *
- *  Created on: 2021. 7. 20.
- *      Author: mokhwasomssi
- *
- */
-
-#ifndef __NRF24L01P_H__
-#define __NRF24L01P_H__
-
-
-#include "main.h"
 #include <stdbool.h>
-
-
-/* User Configurations */
-
-// PB10
-#define NRF24L01P_SPI_CS_PIN_PORT         GPIOB
-#define NRF24L01P_SPI_CS_PIN_NUMBER       GPIO_PIN_10
-
-// PC7
-#define NRF24L01P_CE_PIN_PORT             GPIOC
-#define NRF24L01P_CE_PIN_NUMBER           GPIO_PIN_7
-
-// PB6
-#define NRF24L01P_IRQ_PIN_PORT            GPIOB
-#define NRF24L01P_IRQ_PIN_NUMBER          GPIO_PIN_6
-
-#define NRF24L01P_PAYLOAD_LENGTH          8     // 1 - 32bytes
-
 
 /* nRF24L01+ typedefs */
 typedef uint8_t count;
@@ -85,50 +42,50 @@ typedef enum
 
 
 /* Main Functions */
-void nrf24l01p_rx_init(channel MHz, air_data_rate bps, SPI_HandleTypeDef *hspi);
-void nrf24l01p_tx_init(channel MHz, air_data_rate bps, SPI_HandleTypeDef *hspi);
+void Radio_rx_init(channel MHz, air_data_rate bps, SPI_HandleTypeDef *hspi);
+void Radio_tx_init(channel MHz, air_data_rate bps, SPI_HandleTypeDef *hspi);
 
-void nrf24l01p_rx_receive(uint8_t* rx_payload);
-void nrf24l01p_tx_transmit(uint8_t* tx_payload);
+void Radio_rx_receive(uint8_t* rx_payload);
+void Radio_tx_transmit(uint8_t* tx_payload);
 
 // Check tx_ds or max_rt
-void nrf24l01p_tx_irq();
+void Radio_tx_irq();
 
 
 /* Sub Functions */
-void nrf24l01p_reset();
+void Radio_reset();
 
-void nrf24l01p_prx_mode();
-void nrf24l01p_ptx_mode();
+void Radio_prx_mode();
+void Radio_ptx_mode();
 
-void nrf24l01p_power_up();
-void nrf24l01p_power_down();
+void Radio_power_up();
+void Radio_power_down();
 
-uint8_t nrf24l01p_get_status();
-uint8_t nrf24l01p_get_fifo_status();
+uint8_t Radio_get_status();
+uint8_t Radio_get_fifo_status();
 
 // Static payload lengths
-void nrf24l01p_rx_set_payload_widths(widths bytes);
+void Radio_rx_set_payload_widths(widths bytes);
 
-uint8_t nrf24l01p_read_rx_fifo(uint8_t* rx_payload);
-uint8_t nrf24l01p_write_tx_fifo(uint8_t* tx_payload);
+uint8_t Radio_read_rx_fifo(uint8_t* rx_payload);
+uint8_t Radio_write_tx_fifo(uint8_t* tx_payload);
 
-void nrf24l01p_flush_rx_fifo();
-void nrf24l01p_flush_tx_fifo();
+void Radio_flush_rx_fifo();
+void Radio_flush_tx_fifo();
 
 // Clear IRQ pin. Change LOW to HIGH
-void nrf24l01p_clear_rx_dr();
-void nrf24l01p_clear_tx_ds();
-void nrf24l01p_clear_max_rt();
+void Radio_clear_rx_dr();
+void Radio_clear_tx_ds();
+void Radio_clear_max_rt();
 
-void nrf24l01p_set_rf_channel(channel MHz);
-void nrf24l01p_set_rf_tx_output_power(output_power dBm);
-void nrf24l01p_set_rf_air_data_rate(air_data_rate bps);
+void Radio_set_rf_channel(channel MHz);
+void Radio_set_rf_tx_output_power(output_power dBm);
+void Radio_set_rf_air_data_rate(air_data_rate bps);
 
-void nrf24l01p_set_crc_length(length bytes);
-void nrf24l01p_set_address_widths(widths bytes);
-void nrf24l01p_auto_retransmit_count(count cnt);
-void nrf24l01p_auto_retransmit_delay(delay us);
+void Radio_set_crc_length(length bytes);
+void Radio_set_address_widths(widths bytes);
+void Radio_auto_retransmit_count(count cnt);
+void Radio_auto_retransmit_delay(delay us);
 
 
 /* nRF24L01+ Commands */
@@ -173,4 +130,5 @@ void nrf24l01p_auto_retransmit_delay(delay us);
 #define NRF24L01P_REG_FEATURE           0x1D
 
 
-#endif /* __NRF24L01P_H__ */
+#undef SCOPE
+#endif /* INC_RADIO_H_ */
