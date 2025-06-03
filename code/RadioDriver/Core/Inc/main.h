@@ -69,6 +69,7 @@ void Error_Handler(void);
 #define CE_GPIO_Port GPIOC
 #define IRQ_Pin GPIO_PIN_6
 #define IRQ_GPIO_Port GPIOB
+#define IRQ_EXTI_IRQn EXTI9_5_IRQn
 
 /* USER CODE BEGIN Private defines */
 

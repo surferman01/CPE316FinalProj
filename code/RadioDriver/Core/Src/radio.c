@@ -135,6 +135,7 @@ void nrf24l01p_rx_init(channel MHz, air_data_rate bps, SPI_HandleTypeDef *hspi)
 
     nrf24l01p_prx_mode();
     nrf24l01p_power_up();
+    HAL_Delay(2);
 
     nrf24l01p_rx_set_payload_widths(NRF24L01P_PAYLOAD_LENGTH);
 
@@ -159,6 +160,7 @@ void nrf24l01p_tx_init(channel MHz, air_data_rate bps, SPI_HandleTypeDef *hspi)
 
     nrf24l01p_ptx_mode();
     nrf24l01p_power_up();
+    HAL_Delay(2);
 
     nrf24l01p_set_rf_channel(MHz);
     nrf24l01p_set_rf_air_data_rate(bps);
