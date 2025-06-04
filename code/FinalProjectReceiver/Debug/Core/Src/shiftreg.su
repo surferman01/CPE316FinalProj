@@ -1,0 +1,8 @@
+../Core/Src/shiftreg.c:89:6:ShiftReg_test	8	static
+../Core/Src/shiftreg.c:104:6:ShiftReg_output_enable	8	static
+../Core/Src/shiftreg.c:109:6:ShiftReg_output_disable	8	static
+../Core/Src/shiftreg.c:114:6:ShiftReg_shift_in_data	32	static
+../Core/Src/shiftreg.c:150:13:set_RCK	16	static
+../Core/Src/shiftreg.c:159:13:set_SRCK	16	static
+../Core/Src/shiftreg.c:168:13:set_SIN	16	static
+../Core/Src/shiftreg.c:177:13:set_nG	16	static

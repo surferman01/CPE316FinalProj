@@ -17,8 +17,9 @@
 #include "main.h"
 #include <stdbool.h>
 
-void Transmitter_setup();
-void Transmitter_send(uint8_t *command);
+SCOPE void Transmitter_setup(SPI_HandleTypeDef *hspi);
+SCOPE void Transmitter_send(uint8_t *command);
+SCOPE void Transmitter_irq(uint16_t GPIO_Pin);
 
 #undef SCOPE
 #endif /* INC_RADIO_H_ */

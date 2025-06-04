@@ -1,0 +1,8 @@
+../Core/Src/uart.c:20:6:UART_setup	1
+../Core/Src/uart.c:27:6:UART_irq	1
+../Core/Src/uart.c:31:6:UART_process	2
+../Core/Src/uart.c:42:6:UART_send	1
+../Core/Src/uart.c:46:6:UART_send_char	1
+../Core/Src/uart.c:50:6:UART_send_newline	1
+../Core/Src/uart.c:54:6:UART_send_clear_screen	1
+../Core/Src/uart.c:59:6:UART_send_cursor_pos	1

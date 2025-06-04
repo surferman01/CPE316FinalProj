@@ -17,6 +17,7 @@
   */
 #include "main.h"
 #include "radio.h"
+#include "radio_conf.h"
 
 
 SPI_HandleTypeDef hspi1;

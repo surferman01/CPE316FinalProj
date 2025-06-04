@@ -18,8 +18,11 @@
 
 #include "main.h"
 #include "transmitter.h"
+#include "controller.h"
+#include "uart.h"
+#include "timer.h"
 
-/* HAL defines */
+/* HAL definitions start */
 SPI_HandleTypeDef hspi1;
 
 TIM_HandleTypeDef htim2;
@@ -33,9 +36,24 @@ static void MX_USART2_UART_Init(void);
 static void MX_SPI1_Init(void);
 static void MX_TIM2_Init(void);
 static void MX_TIM5_Init(void);
-/* HAL defines */
+/* HAL definitions end */
 
-uint8_t test_data[32] = { 0 };
+
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{
+	Transmitter_irq(GPIO_Pin);
+}
+
+
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+	UART_irq();
+}
+
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+	Timer_handle();
+}
 
 int main(void)
 {
@@ -50,14 +68,24 @@ int main(void)
 	MX_TIM2_Init();
 	MX_TIM5_Init();
 
+	// radio setup
 	Transmitter_setup(&hspi1);
 
+	// uart setup
+	UART_setup(&huart2);
+
+	// timer setup
+	HAL_TIM_Base_Start_IT(&htim2);
+	HAL_TIM_Base_Start(&htim5);
+	Timer_set_ns_upcounter(&htim5);
 
 	while (1)
 	{
-		Transmitter_send(test_data);
-	}
+		UART_process(&Controller_UART_recv_callback);
 
+		// main processing
+		Controller_process();
+	}
 }
 
 /**
