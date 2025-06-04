@@ -1,0 +1,3 @@
+../Core/Src/Display.c:22:6:DisplayClear	1
+../Core/Src/Display.c:28:6:DisplayHome	1
+../Core/Src/Display.c:33:6:DisplayString	1

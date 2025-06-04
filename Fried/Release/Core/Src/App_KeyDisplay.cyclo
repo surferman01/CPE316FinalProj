@@ -1,0 +1,9 @@
+../Core/Src/App_KeyDisplay.c:22:16:App_KeyDisplay_construct	1
+../Core/Src/App_KeyDisplay.c:38:6:App_KeyDisplay_loop	5
+../Core/Src/App_KeyDisplay.c:66:6:App_KeyDisplay_ShowIntroScreen	1
+../Core/Src/App_KeyDisplay.c:83:6:App_KeyDisplay_handleIntroScreen	2
+../Core/Src/App_KeyDisplay.c:93:6:App_KeyDisplay_ShowProcessScreen	1
+../Core/Src/App_KeyDisplay.c:112:6:App_KeyDisplay_ShowProcessScreen2	3
+../Core/Src/App_KeyDisplay.c:138:6:App_KeyDisplay_HandleProcessScreen	15
+../Core/Src/App_KeyDisplay.c:250:6:App_KeyDisplay_HandleResultScreen	2
+../Core/Src/App_KeyDisplay.c:259:6:App_KeyDisplay_ShowExitScreen	1

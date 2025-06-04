@@ -1,0 +1,3 @@
+../Core/Src/timer.c:6:6:Timer_handle	16	static
+../Core/Src/timer.c:22:6:Timer_set_ns_upcounter	16	static
+../Core/Src/timer.c:26:6:delay_ns	24	static
