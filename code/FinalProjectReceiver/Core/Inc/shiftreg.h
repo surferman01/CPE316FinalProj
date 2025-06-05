@@ -23,5 +23,7 @@ SCOPE void ShiftReg_output_disable();
 
 SCOPE void ShiftReg_shift_in_data(uint8_t *data, int shiftreg_count);
 
+SCOPE const uint8_t SSEG_TT[10];
+
 #undef SCOPE
 #endif /* INC_SHIFTREG_H_ */

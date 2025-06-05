@@ -14,6 +14,7 @@
 #endif
 
 #include "main.h"
+#include <string.h>
 
 SCOPE void Controller_process();
 SCOPE void Controller_UART_recv_callback(char c);
