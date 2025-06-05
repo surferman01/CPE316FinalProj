@@ -21,6 +21,7 @@ void UART_setup(UART_HandleTypeDef *huartRef) {
 	huart = huartRef;
 	recved = 0;
 	recvChar = '\0';
+	HAL_UART_Receive_IT(huart, (uint8_t *) &recvChar, 1);
 }
 
 /* recv functions */
