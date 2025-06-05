@@ -62,6 +62,11 @@ int main(void)
 
 	SystemClock_Config();
 
+	// timer setup
+	HAL_TIM_Base_Start_IT(&htim2);
+	HAL_TIM_Base_Start(&htim5);
+	Timer_set_ns_upcounter(&htim5);
+
 	MX_GPIO_Init();
 	MX_USART2_UART_Init();
 	MX_SPI1_Init();
@@ -73,11 +78,6 @@ int main(void)
 
 	// uart setup
 	UART_setup(&huart2);
-
-	// timer setup
-	HAL_TIM_Base_Start_IT(&htim2);
-	HAL_TIM_Base_Start(&htim5);
-	Timer_set_ns_upcounter(&htim5);
 
 	while (1)
 	{

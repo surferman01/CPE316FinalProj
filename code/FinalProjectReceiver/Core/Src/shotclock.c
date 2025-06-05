@@ -73,7 +73,7 @@ void Shotclock_Radio_recv_callback(uint8_t* command) {
 
 // called in main while loop
 void Shotclock_process() {
-    ShiftReg_shift_in_data(test_data, SHIFT_REG_COUNT);
+    // ShiftReg_shift_in_data(test_data, SHIFT_REG_COUNT);
 }
 
 /* Static function defintions */

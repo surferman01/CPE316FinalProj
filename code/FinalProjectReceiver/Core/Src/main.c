@@ -63,16 +63,16 @@ int main(void)
 	MX_SPI1_Init();
 	MX_USART2_UART_Init();
 
+	// timer setup
+	HAL_TIM_Base_Start_IT(&htim2);
+	HAL_TIM_Base_Start(&htim5);
+	Timer_set_ns_upcounter(&htim5);
+
 	// radio setup
 	Receiver_setup(&hspi1);
 
 	// uart setup
 	UART_setup(&huart2);
-
-	// timer setup
-	HAL_TIM_Base_Start_IT(&htim2);
-	HAL_TIM_Base_Start(&htim5);
-	Timer_set_ns_upcounter(&htim5);
 
 	while (1)
 	{

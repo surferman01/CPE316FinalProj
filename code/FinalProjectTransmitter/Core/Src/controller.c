@@ -55,13 +55,13 @@ void Controller_UART_recv_callback(char c) {
 			memset(Command_Buffer, 0, COMMAND_BUFFER_SIZE);
 			return;
 		}
-		if (strncmp(HORN_STR, Command_Buffer, strlen(HORN_STR)) == 0) {
+		if (strncmp(HORN_STR, (char*)Command_Buffer, strlen(HORN_STR)) == 0) {
 			return_flg = 1; 
 			UART_send("Sending Command: HORN...");
 			UART_send("\n\r");
 			return;
 		}
-		if (strncmp(SSEG_STR, Command_Buffer, strlen(SSEG_STR)) == 0) {
+		if (strncmp(SSEG_STR, (char*)Command_Buffer, strlen(SSEG_STR)) == 0) {
 			return_flg = 1; 
 			UART_send("Sending Command: SSEG...");
 			UART_send("\n\r");
@@ -120,8 +120,8 @@ void Controller_process() {
 		// Transmitter_send(test_data);
 		command_length = 0;
 		memset(Command_Buffer, 0, COMMAND_BUFFER_SIZE);
-		memset(Processed_Buffer, 0, COMMAND_BUFFER_SIZE);
-		UART_Send("> ");
+		// memset(Processed_Buffer, 0, COMMAND_BUFFER_SIZE);
+		UART_send("> ");
 	}
 	// HAL_Delay(100);
 }

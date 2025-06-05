@@ -60,8 +60,8 @@ all: main-build
 main-build: FinalProjectReceiver.elf secondary-outputs
 
 # Tool invocations
-FinalProjectReceiver.elf FinalProjectReceiver.map: $(OBJS) $(USER_OBJS) /Users/alex/Desktop/School/CPE316/Project/CPE316FinalProj/code/FinalProjectReceiver/STM32L476RGTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "FinalProjectReceiver.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"/Users/alex/Desktop/School/CPE316/Project/CPE316FinalProj/code/FinalProjectReceiver/STM32L476RGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="FinalProjectReceiver.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+FinalProjectReceiver.elf FinalProjectReceiver.map: $(OBJS) $(USER_OBJS) /Users/bensoto/Documents/Cal\ Poly\ Courses/CPE316/CPE316FinalProj/code/FinalProjectReceiver/STM32L476RGTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "FinalProjectReceiver.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"/Users/bensoto/Documents/Cal Poly Courses/CPE316/CPE316FinalProj/code/FinalProjectReceiver/STM32L476RGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="FinalProjectReceiver.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
