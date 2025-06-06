@@ -7,6 +7,7 @@
 
 #define _SHIFTREG_C
 
+#include <stdbool.h>
 #include "shiftreg.h"
 #include "shiftreg_conf.h"
 
@@ -121,6 +122,7 @@ void ShiftReg_output_disable() {
 void ShiftReg_shift_in_data(uint8_t *data, int shiftreg_count) {
 	int regnum, bitnum;
 	int bit;
+	SHIFT_PROCESSING = 1;
 
 	// from TPIC6596 datasheet section 6 (Parameter Measurement Information)
 	// "Write data and read data are valid only when RCK is low"

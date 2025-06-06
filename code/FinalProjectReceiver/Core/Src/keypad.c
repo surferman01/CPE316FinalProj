@@ -1,8 +1,12 @@
 #define _KEYPAD_C
 
+#include <stdbool.h>
 #include "keypad.h"
 #include "timer.h"
 #include "main.h"
+#include "shotclock.h"
+#include "uart.h"
+#include "shiftreg.h"
 
 void KeypadClear() {
 	int sIndex;
@@ -177,4 +181,134 @@ void KeyProcess(void (*keyPressedCallback)(char key), void (*keyRepeatedCallback
 		for (sIndex=0; sIndex<Number_of_Cols; sIndex++)
 			sKeyLow2HighCol[sIndex] = 0x0000;
 	}
+}
+
+// i want the following feature. if you press a button,
+// it reads the next 6 buttons you press and the order you
+// press the buttons puts the value at that location
+
+int index_store;
+bool CHOOSE_VAL = false;
+
+void key1() {
+	if (CHOOSE_VAL == true) {
+		// set the shift reg data to be the hex value for the number pressed
+		SR_Data[index_store] = SSEG_TT[1];
+		CHOOSE_VAL = false;
+		return;
+	}
+	// here would be if its the first time the button is pressed
+	UART_send("NOW CHOOSE VALUE FOR SSEG0:\n\r");
+	index_store = SSEG0;
+	CHOOSE_VAL = true;
+
+}
+void key2() {
+	if (CHOOSE_VAL == true) {
+		// set the shift reg data to be the hex value for the number pressed
+		SR_Data[index_store] = SSEG_TT[2];
+		CHOOSE_VAL = false;
+		return;
+	}
+	UART_send("NOW CHOOSE VALUE FOR SSEG1:\n\r");
+	index_store = SSEG1;
+	CHOOSE_VAL = true;
+}
+void key3() {
+	if (CHOOSE_VAL == true) {
+		// set the shift reg data to be the hex value for the number pressed
+		SR_Data[index_store] = SSEG_TT[3];
+		CHOOSE_VAL = false;
+		return;
+	}
+	UART_send("NOW CHOOSE VALUE FOR SSEG2:\n\r");
+	index_store = SSEG2;
+	CHOOSE_VAL = true;
+}
+void key4() {
+	if (CHOOSE_VAL == true) {
+		// set the shift reg data to be the hex value for the number pressed
+		SR_Data[index_store] = SSEG_TT[4];
+		CHOOSE_VAL = false;
+		return;
+	}
+	UART_send("NOW CHOOSE VALUE FOR SSEG3:\n\r");
+	index_store = SSEG3;
+	CHOOSE_VAL = true;
+}
+void key5() {
+	if (CHOOSE_VAL == true) {
+		// set the shift reg data to be the hex value for the number pressed
+		SR_Data[index_store] = SSEG_TT[5];
+		CHOOSE_VAL = false;
+		return;
+	}
+	UART_send("NOW CHOOSE VALUE FOR SSEG4:\n\r");
+	index_store = SSEG4;
+	CHOOSE_VAL = true;
+}
+void key6() {
+	if (CHOOSE_VAL == true) {
+		// set the shift reg data to be the hex value for the number pressed
+		SR_Data[index_store] = SSEG_TT[6];
+		CHOOSE_VAL = false;
+		return;
+	}
+	UART_send("NOW CHOOSE VALUE FOR SSEG5:\n\r");
+	index_store = SSEG5;
+	CHOOSE_VAL = true;
+
+}
+void key7() {
+	if (CHOOSE_VAL == true) {
+		// set the shift reg data to be the hex value for the number pressed
+		SR_Data[index_store] = SSEG_TT[7];
+		CHOOSE_VAL = false;
+
+		return;
+	}
+
+}
+void key8() {
+	if (CHOOSE_VAL == true) {
+		// set the shift reg data to be the hex value for the number pressed
+		SR_Data[index_store] = SSEG_TT[8];
+		CHOOSE_VAL = false;
+		return;
+	}
+
+}
+void key9() {
+	if (CHOOSE_VAL == true) {
+		// set the shift reg data to be the hex value for the number pressed
+		SR_Data[index_store] = SSEG_TT[9];
+		CHOOSE_VAL = false;
+		return;
+	}
+
+}
+void key0() {
+	if (CHOOSE_VAL == true) {
+		// set the shift reg data to be the hex value for the number pressed
+		SR_Data[index_store] = SSEG_TT[0];
+		CHOOSE_VAL = false;
+		return;
+	}
+	horn();
+}
+void keyS() {
+	if (CHOOSE_VAL == true) {
+		UART_send("INVALID CHOICE\n\rRESET");
+		CHOOSE_VAL = false;
+		return;
+	}
+	ShiftReg_output_enable();
+}
+void keyP() {
+	if (CHOOSE_VAL == true) {
+		UART_send("INVALID CHOICE\n\rRESET");
+		CHOOSE_VAL = false;
+		return;
+	}
+	ShiftReg_output_disable();
 }

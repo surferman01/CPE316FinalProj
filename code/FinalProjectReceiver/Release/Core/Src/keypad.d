@@ -30,7 +30,8 @@ Core/Src/keypad.o: ../Core/Src/keypad.c ../Core/Inc/keypad.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_tim_ex.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart_ex.h \
- ../Core/Inc/main.h
+ ../Core/Inc/main.h ../Core/Inc/shotclock.h ../Core/Inc/uart.h \
+ ../Core/Inc/shiftreg.h
 ../Core/Inc/keypad.h:
 ../Core/Inc/timer.h:
 ../Core/Inc/main.h:
@@ -65,3 +66,6 @@ Core/Src/keypad.o: ../Core/Src/keypad.c ../Core/Inc/keypad.h \
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart_ex.h:
 ../Core/Inc/main.h:
+../Core/Inc/shotclock.h:
+../Core/Inc/uart.h:
+../Core/Inc/shiftreg.h:

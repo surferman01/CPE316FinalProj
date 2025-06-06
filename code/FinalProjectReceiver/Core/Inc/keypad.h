@@ -86,5 +86,19 @@ SCOPE unsigned short sKeyPreviousCol[Number_of_Cols];
 SCOPE unsigned short sKeyLow2HighCol[Number_of_Cols];
 SCOPE unsigned short sKeyHigh2LowCol[Number_of_Cols];
 
+SCOPE void key1();
+SCOPE void key2();
+SCOPE void key3();
+SCOPE void key4();
+SCOPE void key5();
+SCOPE void key6();
+SCOPE void key7();
+SCOPE void key8();
+SCOPE void key9();
+SCOPE void key0();
+SCOPE void keyS();
+SCOPE void keyP();
+
+
 #undef SCOPE
 #endif /* INC_KEYPAD_H_ */

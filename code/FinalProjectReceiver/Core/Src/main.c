@@ -84,6 +84,7 @@ int main(void)
 
 	HAL_Delay(2000);
 	UART_send("READY!\n\r");
+	SHIFT_PROCESSING = 0;
 
 //	ShiftReg_shift_in_data(test_data, 7);
 	ShiftReg_output_enable();
