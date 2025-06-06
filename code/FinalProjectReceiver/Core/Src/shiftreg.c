@@ -1,5 +1,6 @@
 /** shiftreg.c
- * Implements a driver for the TPIC6595 shift register using Open Drain GPIOs
+ * Implements a driver for the TPIC6595 shift register using
+ * an 8 Channel 5V Relay Module (TS0012) controlled by GPIOs
  *
  * Author: Alex Castellar
 */
@@ -26,6 +27,9 @@
 // from TPIC6596 datasheet section 5.5 (Switching Characteristics)
 #define TYP_NG_HIGH_TO_LOW_PROPAGATION_DELAY	650 // ns
 #define TYP_NG_LOW_TO_HIGH_PROPAGATION_DELAY	150 // ns
+
+#define TYP_OUTPUT_DRAIN_RISE_TIME	750 //ns
+#define TYP_OUTPUT_DRAIN_FALL_TIME	425 //ns
 
 // from stm32l476rg reference manual table 72 (I/O AC characteristics)
 // took 3.3V and highest capacitance conditions
@@ -63,19 +67,22 @@
 //
 #define RC_RISE_TIME_90(R, C) ((23 * (R) * (C)) / 10000)
 
-// get driving speed from speed settings
-#define SIN_FALL_TIME
-#define NG_FALL_TIME   	GPIO_SAFE_RISE_FALL_TIME(SHIFTREG_NG_SPEED_SETTING, SHIFTREG_NG_CAPACITANCE_PICOFARADS)
+#define SWITCHING_SPEED_NS 20000000
 
-// goes open drain and becomes an RC circuit after stopping driving
-#define RCK_RISE_FALL_TIME   (GPIO_SAFE_RISE_FALL_TIME(SHIFTREG_RCK_SPEED_SETTING, SHIFTREG_RCK_CAPACITANCE_PICOFARADS) \
-							+ RC_RISE_TIME_90(SHIFTREG_RCK_EXTERNAL_PULLUP_OHMS, SHIFTREG_RCK_CAPACITANCE_PICOFARADS))
-#define SRCK_RISE_FALL_TIME	(GPIO_SAFE_RISE_FALL_TIME(SHIFTREG_SRCK_SPEED_SETTING, SHIFTREG_SRCK_CAPACITANCE_PICOFARADS) \
-							+ RC_RISE_TIME_90(SHIFTREG_SRCK_EXTERNAL_PULLUP_OHMS, SHIFTREG_SRCK_CAPACITANCE_PICOFARADS))
-#define SIN_RISE_FALL_TIME   (GPIO_SAFE_RISE_FALL_TIME(SHIFTREG_SIN_SPEED_SETTING, SHIFTREG_SIN_CAPACITANCE_PICOFARADS) \
-							+ RC_RISE_TIME_90(SHIFTREG_SIN_EXTERNAL_PULLUP_OHMS, SHIFTREG_SIN_CAPACITANCE_PICOFARADS))
-#define NG_RISE_FALL_TIME    (GPIO_SAFE_RISE_FALL_TIME(SHIFTREG_NG_SPEED_SETTING, SHIFTREG_NG_CAPACITANCE_PICOFARADS) \
-							+ RC_RISE_TIME_90(SHIFTREG_NG_EXTERNAL_PULLUP_OHMS, SHIFTREG_NG_CAPACITANCE_PICOFARADS))
+#define SIGNAL_RISE_FALL_TIME(gpio_speed, capacitance_pF, resistance_ohm) \
+							(GPIO_SAFE_RISE_FALL_TIME(gpio_speed, capacitance_pF) \
+							+ RC_RISE_TIME_90(resistance_ohm, capacitance_pF)) \
+							+ SWITCHING_SPEED_NS
+
+// drives making the open drain mosfet and becomes an RC circuit aft
+#define RCK_RISE_FALL_TIME  SIGNAL_RISE_FALL_TIME(SHIFTREG_RCK_SPEED_SETTING, \
+							SHIFTREG_RCK_CAPACITANCE_PICOFARADS, SHIFTREG_RCK_EXTERNAL_PULLUP_OHMS)
+#define SRCK_RISE_FALL_TIME	SIGNAL_RISE_FALL_TIME(SHIFTREG_SRCK_SPEED_SETTING, \
+							SHIFTREG_SRCK_CAPACITANCE_PICOFARADS, SHIFTREG_SRCK_EXTERNAL_PULLUP_OHMS)
+#define SIN_RISE_FALL_TIME  SIGNAL_RISE_FALL_TIME(SHIFTREG_SIN_SPEED_SETTING, \
+							SHIFTREG_SIN_CAPACITANCE_PICOFARADS, SHIFTREG_SIN_EXTERNAL_PULLUP_OHMS)
+#define NG_RISE_FALL_TIME   SIGNAL_RISE_FALL_TIME(SHIFTREG_NG_SPEED_SETTING, \
+							SHIFTREG_NG_CAPACITANCE_PICOFARADS, SHIFTREG_NG_EXTERNAL_PULLUP_OHMS)
 
 /* static function definitions */
 
@@ -103,12 +110,12 @@ void ShiftReg_test() {
 
 void ShiftReg_output_enable() {
 	set_nG(LOW);
-	delay_ns(TYP_NG_HIGH_TO_LOW_PROPAGATION_DELAY);
+	DELAY_NS(TYP_NG_HIGH_TO_LOW_PROPAGATION_DELAY);
 }
 
 void ShiftReg_output_disable() {
 	set_nG(HIGH);
-	delay_ns(TYP_NG_LOW_TO_HIGH_PROPAGATION_DELAY);
+	DELAY_NS(TYP_NG_LOW_TO_HIGH_PROPAGATION_DELAY);
 }
 
 void ShiftReg_shift_in_data(uint8_t *data, int shiftreg_count) {
@@ -131,11 +138,11 @@ void ShiftReg_shift_in_data(uint8_t *data, int shiftreg_count) {
 			// shifts previously shifted bits forward
 
 			set_SIN(bit);
-			delay_ns(MIN_SIN_SETUP_TIME);
+			DELAY_NS(MIN_SIN_SETUP_TIME);
 
 			set_SRCK(HIGH);
 
-			delay_ns(MIN_SIN_PULSE_DURATION);
+			DELAY_NS(MIN_SIN_PULSE_DURATION);
 			set_SRCK(LOW);
 		}
 	}
@@ -143,44 +150,31 @@ void ShiftReg_shift_in_data(uint8_t *data, int shiftreg_count) {
 	// clock RCLK, saving the values that were shifted in
 	set_RCK(HIGH);
 	set_RCK(LOW);
+
+	DELAY_NS(TYP_OUTPUT_DRAIN_RISE_TIME);
 }
 
 /* static functions */
 
 static void set_RCK(GPIO_PinState val) {
-	HAL_GPIO_WritePin(SHIFTREG_RCK_GPIO_EXPANDER, SHIFTREG_RCK_GPIO_PIN, val);
-	if (val == GPIO_PIN_SET) {
-		delay_ns(RCK_RISE_FALL_TIME);
-	} else {
-		delay_ns(RCK_RISE_FALL_TIME);
-	}
+	HAL_GPIO_WritePin(SHIFTREG_RCK_GPIO_EXPANDER, SHIFTREG_RCK_GPIO_PIN, !val);
+	DELAY_NS(RCK_RISE_FALL_TIME);
 }
 
 static void set_SRCK(GPIO_PinState val) {
-	HAL_GPIO_WritePin(SHIFTREG_SRCK_GPIO_EXPANDER, SHIFTREG_SRCK_GPIO_PIN, val);
-	if (val == GPIO_PIN_SET) {
-		delay_ns(SRCK_RISE_FALL_TIME);
-	} else {
-		delay_ns(SRCK_RISE_FALL_TIME);
-	}
+	HAL_GPIO_WritePin(SHIFTREG_SRCK_GPIO_EXPANDER, SHIFTREG_SRCK_GPIO_PIN, !val);
+	DELAY_NS(SRCK_RISE_FALL_TIME);
 }
 
 static void set_SIN(GPIO_PinState val) {
-	HAL_GPIO_WritePin(SHIFTREG_SIN_GPIO_EXPANDER, SHIFTREG_SIN_GPIO_PIN, val);
-	if (val == GPIO_PIN_SET) {
-		delay_ns(SIN_RISE_FALL_TIME);
-	} else {
-		delay_ns(SIN_RISE_FALL_TIME);
-	}
+	HAL_GPIO_WritePin(SHIFTREG_SIN_GPIO_EXPANDER, SHIFTREG_SIN_GPIO_PIN, !val);
+	DELAY_NS(SIN_RISE_FALL_TIME);
+
 }
 
 static void set_nG(GPIO_PinState val) {
-	HAL_GPIO_WritePin(SHIFTREG_NG_GPIO_EXPANDER, SHIFTREG_NG_GPIO_PIN, val);
-	if (val == GPIO_PIN_SET) {
-		delay_ns(NG_RISE_FALL_TIME);
-	} else {
-		delay_ns(NG_RISE_FALL_TIME);
-	}
+	HAL_GPIO_WritePin(SHIFTREG_NG_GPIO_EXPANDER, SHIFTREG_NG_GPIO_PIN, !val);
+	DELAY_NS(NG_RISE_FALL_TIME);
 }
 
 

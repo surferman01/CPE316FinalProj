@@ -5,7 +5,8 @@
  */
 
 #define _SHOTCLOCK_C
-
+#include <stdbool.h>
+//#include "Common.h"
 #include "shotclock.h"
 
 #include "main.h"
@@ -13,6 +14,9 @@
 #include "uart.h"
 #include "shiftreg.h"
 #include "timer.h"
+//#include "HAL.h"
+//#include "Key.h"
+#include "keypad.h"
 
 /* Constant defintions */
 
@@ -54,6 +58,21 @@ void Shotclock_UART_recv_callback(char c) {
 
 }
 
+void keyPressedCallback(char key) {
+	if (key == '1') {
+		ShiftReg_output_enable();
+		UART_send("KEY 1 PRESS, OUTPUT ENABLE\n\r");
+	}
+	if (key == '2') {
+		ShiftReg_output_disable();
+		UART_send("KEY 2 PRESS, OUTPUT DISABLE\n\r");
+	}
+	if (key == '3') {
+		ShiftReg_shift_in_data(test_data, 7);
+		UART_send("KEY 3 PRESS, SHIFTING TEST DATA\n\r");
+	}
+}
+
 // called when radio received and has processed a command
 // command is 32 bytes
 void Shotclock_Radio_recv_callback(uint8_t* command) {
@@ -61,8 +80,8 @@ void Shotclock_Radio_recv_callback(uint8_t* command) {
 
     if (strncmp(HORN_STR, Incoming_Command, strlen(HORN_STR)) == 0) {
         SSEG_Data[6] = 0xFF;
-        int i;
-        int cur = 0;
+//        int i;
+//        int cur = 0;
 
         // for (i = 0; i < SHIFT_REG_COUNT; i++) {
         //   ShiftReg_display_digit(&SSEG_Data, i, i);
@@ -73,6 +92,21 @@ void Shotclock_Radio_recv_callback(uint8_t* command) {
 
 // called in main while loop
 void Shotclock_process() {
+
+	if (sTimer[KEY_SCAN_TIMER] == 0)
+		{
+			KeypadScan();
+			KeyProcess(&keyPressedCallback, NULL, NULL);
+			sTimer[KEY_SCAN_TIMER] = KEY_SCAN_TIME;
+		}
+
+//	if (Key_isPushed(&hal_p->key1))
+//		  {
+//		      UART_send("1 is pushed.\n\r");
+//		      UART_send_newline();
+//			  AllKeyRestart();
+//
+//		  }
     // ShiftReg_shift_in_data(test_data, SHIFT_REG_COUNT);
 }
 

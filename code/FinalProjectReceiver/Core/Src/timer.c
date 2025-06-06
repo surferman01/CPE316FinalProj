@@ -17,15 +17,16 @@ void Timer_handle(void)
 }
 
 // delay
-static TIM_HandleTypeDef* htim_ns_upcounter = NULL;
+static TIM_HandleTypeDef* htim_us_upcounter = NULL;
 
-void Timer_set_ns_upcounter(TIM_HandleTypeDef* htim) {
-	htim_ns_upcounter = htim;
+void Timer_set_us_upcounter(TIM_HandleTypeDef* htim) {
+	htim_us_upcounter = htim;
 }
 
-void delay_ns(uint32_t ns) {
-    uint32_t start = htim_ns_upcounter->Instance->CNT;
+void delay_us(uint32_t us) {
+    uint32_t start = htim_us_upcounter->Instance->CNT;
 
-    while ((uint32_t) (htim_ns_upcounter->Instance->CNT - start) < ns)
-        ;;
+    while ((uint32_t) (htim_us_upcounter->Instance->CNT - start) < us) {
+
+    }
 }
